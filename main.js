@@ -9,15 +9,16 @@ app.on('ready', () => {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,  // Do not allow Node.js integration in the renderer process
-      contextIsolation: true,  // Enable context isolation for security
-      preload: path.join(__dirname, 'preload.js'),  // Optional: Preload script for additional setup
+      nodeIntegration: false,
+      contextIsolation: true
     },
   });
 
   const startURL = `file://${path.join(__dirname, 'build', 'index.html')}`;
   console.log('Electron is loading:', startURL);
   mainWindow.loadURL(startURL);
+
+  mainWindow.loadFile(path.join(__dirname, 'build', 'index.html'));
 
   mainWindow.on('closed', () => {
     mainWindow = null;
