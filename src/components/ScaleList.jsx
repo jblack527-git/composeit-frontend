@@ -46,8 +46,7 @@ function Scales() {
 
     return (
         <div className="container mt-2">
-            <h2 className="mb-4" style={{fontFamily:'Geo'}}>find scale by semitones</h2>
-            <div className="form-group">
+            <div class="grid grid-cols-4 gap-4 p-4">
                 {semitoneOptions.map((semitone, index) => (
                     <div class="form-check form-check-inline">
                         <input 
@@ -77,15 +76,17 @@ function Scales() {
             {
                 scales.length > 0 ? (
                     <div style={{ textAlign: 'center'}}>
-                        <ul className="list-group mt-3" style={{ display: "inline-block" }}>
-                            {scales.map((scale, index) => <li key={index} className="list-group-item" style={{
-                            backgroundColor: '#F69DEE',
-                            border: '1px solid #ccc',
-                            maxWidth: "100%", 
-                            height: "auto",
-                            fontFamily:'Geo'
-                        }}>{scale}</li>)}
-                        </ul>
+                        <div className="grid grid-cols-4 gap-4 p-4">
+                            {scales.map((scale, index) => 
+                            <label key={index} style={{
+                                backgroundColor: '#F69DEE',
+                                border: '1px solid #ccc',
+                                maxWidth: "100%", 
+                                height: "auto",
+                                fontFamily:'Geo'
+                                }}>{scale}
+                            </label>)}
+                        </div>
                     </div>
                 ) : (
                     <p style={{padding: '3%', fontFamily:'Geo'}}>No scales found</p>

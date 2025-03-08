@@ -4,7 +4,7 @@
   text-align: center;
   font-family: inherit; /* Inherit from root */
 
-  background-image: url('./assets/gum-clouds.jpg');
+  background-image: url('./assets/default-sky.jpg');
   background-size: cover; /* or cover, depending on the scaling behavior you want */
   background-repeat: no-repeat; /* Prevent tiling */
   background-position: center; /* Center the image */
