@@ -20,7 +20,7 @@ function Navbar() {
                         <button 
                             className="btn"
                             style={{
-                                backgroundColor: '#DDC098',
+                                backgroundColor: 'rgba(221, 192, 152, 0.7)',
                                 fontFamily: 'Geo',
                                 color: 'black'
                             }}
@@ -42,7 +42,7 @@ function Navbar() {
                                     to="/semitones" 
                                     className="btn d-block"
                                     style={{
-                                        backgroundColor: '#DDC098',
+                                        backgroundColor: 'rgba(221, 192, 152, 0.7)',
                                         fontFamily: 'Geo',
                                         color: 'black',
                                         marginTop: '5px'
@@ -54,7 +54,7 @@ function Navbar() {
                                     to="/chords" 
                                     className="btn d-block"
                                     style={{
-                                        backgroundColor: '#DDC098',
+                                        backgroundColor: 'rgba(221, 192, 152, 0.7)',
                                         fontFamily: 'Geo',
                                         color: 'black',
                                         marginTop: '5px'
