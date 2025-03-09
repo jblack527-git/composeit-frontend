@@ -15,7 +15,7 @@ function ScaleFromSemitone() {
         if (selectedSemitones.length === 0) return;
         
         console.log("Fetching data...");
-        fetch('http://localhost:8080/api/scales/scales', {
+        fetch('/api/scales/scales', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -85,7 +85,7 @@ function ScaleFromSemitone() {
             {error && <p className="text-danger">Error: {error}</p>}
 
             {
-                scales.length > 0 ? (
+                scales && scales.length > 0 ? (
                     <div style={{ textAlign: 'center', padding: '20px' }}>
                         <div style={{ 
                             display: 'grid',
