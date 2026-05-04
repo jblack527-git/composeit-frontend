@@ -19,8 +19,10 @@ async function startServer() {
     try {
         console.log('Starting server...');
         
-        // Get the JAR path
-        const jarPath = path.join(process.resourcesPath, 'static', 'backend-0.0.1-SNAPSHOT.jar');
+        // Get the JAR path — dev vs packaged differ
+        const jarPath = app.isPackaged
+            ? path.join(process.resourcesPath, 'static', 'backend-0.0.1-SNAPSHOT.jar')
+            : path.join(__dirname, '..', 'backend', 'build', 'libs', 'backend-0.0.1-SNAPSHOT.jar');
         console.log('JAR Path:', jarPath);
 
         if (!fs.existsSync(jarPath)) {

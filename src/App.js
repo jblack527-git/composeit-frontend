@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Home from './components/Home';
 import ScaleFromSemitone from './components/ScaleFromSemitone';
+import ScaleFromChords from './components/ScaleFromChords';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import gumClouds from './assets/gum-clouds.jpg';
@@ -40,8 +42,10 @@ function AppContent() {
       </div>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/semitones" element={<ScaleFromSemitone />} />
-        <Route path="/chords" element={<div>Chords Component (Coming Soon)</div>} />
+        <Route path="/chords" element={<ScaleFromChords />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );

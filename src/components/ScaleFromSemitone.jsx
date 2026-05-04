@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ScaleFromSemitone() {
-    console.log("Scales component rendered");
     const [scales, setScales] = useState([]);
     const [selectedSemitones, setSelectedSemitones] = useState([]);
     const [error, setError] = useState(null);
@@ -12,24 +11,26 @@ function ScaleFromSemitone() {
     ];
 
     useEffect(() => {
-        if (selectedSemitones.length === 0) return;
-        
-        console.log("Fetching data...");
-        fetch('/api/scales/scales', {
+        if (selectedSemitones.length === 0) {
+            setScales([]);
+            setError(null);
+            return;
+        }
+
+        setError(null);
+        fetch('/api/scales-from-semitones', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                "semitones": selectedSemitones
+                "semitones": selectedSemitones.flatMap(s => s.split('/'))
             })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Received data:", data);
-            setScales(data.scales);
+            setScales(data.scales ?? []);
         })
         .catch(error => {
             setError(error.message);
-            console.error('Error fetching scales:', error)
         });
     }, [selectedSemitones]);
 
