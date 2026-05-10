@@ -16,7 +16,7 @@ function AppContent() {
   const location = useLocation();
   
   const getBackgroundStyle = () => {
-    if (location.pathname === '/semitones') {
+    if (location.pathname === '/semitones' || location.pathname === '/chords') {
       return {
         backgroundImage: `url(${gumClouds})`,
         backgroundSize: 'cover',
@@ -25,7 +25,7 @@ function AppContent() {
         minHeight: '100vh'
       };
     }
-    if (location.pathname === '/chords') {
+    if (location.pathname.startsWith('/scales')) {
       return {
         backgroundImage: `url(${fujiClouds})`,
         backgroundSize: 'cover',
