@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import ScaleFromSemitone from './components/ScaleFromSemitone';
 import ScaleFromChords from './components/ScaleFromChords';
+import ViewScales from './components/ViewScales';
+import KeyProfile from './components/KeyProfile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import gumClouds from './assets/gum-clouds.jpg';
@@ -45,6 +47,8 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/semitones" element={<ScaleFromSemitone />} />
         <Route path="/chords" element={<ScaleFromChords />} />
+        <Route path="/scales" element={<ViewScales />} />
+        <Route path="/scales/:tonic/:quality" element={<KeyProfile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

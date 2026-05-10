@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { TONICS, tonicToUrlSlug, qualityToUrlSlug, parseScaleName } from '../constants/music';
+import { BUTTON_BG, BUTTON_BG_ACTIVE, SCALE_RESULT_BG } from '../constants/theme';
 
 function ScaleFromSemitone() {
     const [scales, setScales] = useState([]);
     const [selectedSemitones, setSelectedSemitones] = useState([]);
     const [error, setError] = useState(null);
-
-    const semitoneOptions = [
-        "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"
-    ];
 
     useEffect(() => {
         if (selectedSemitones.length === 0) {
@@ -47,7 +46,7 @@ function ScaleFromSemitone() {
 
     return (
         <div className="container mt-2">
-            <div style={{ 
+            <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '10px',
@@ -55,22 +54,22 @@ function ScaleFromSemitone() {
                 maxWidth: '800px',
                 margin: '0 auto'
             }}>
-                {semitoneOptions.map((semitone, index) => (
+                {TONICS.map((semitone, index) => (
                     <div key={index} className="form-check form-check-inline" style={{
                         margin: 0  // Override Bootstrap's default margin
                     }}>
-                        <input 
-                        className="btn-check" 
+                        <input
+                        className="btn-check"
                         id={`btn-check-${index}`}
                         type="checkbox"
                         value={semitone}
                         checked={selectedSemitones.includes(semitone)}
                         onChange={handleCheckboxChange}
                         />
-                        <label className="btn btn-primary" 
-                        htmlFor={`btn-check-${index}`} 
+                        <label className="btn btn-primary"
+                        htmlFor={`btn-check-${index}`}
                         style={{
-                            backgroundColor: selectedSemitones.includes(semitone) ? '#DDC098' : 'rgba(221, 192, 152, 0.7)',
+                            backgroundColor: selectedSemitones.includes(semitone) ? BUTTON_BG_ACTIVE : BUTTON_BG,
                             color: selectedSemitones.includes(semitone) ? 'white' : 'black',
                             border: '1px solid #ccc',
                             fontFamily: 'Geo',
@@ -88,31 +87,46 @@ function ScaleFromSemitone() {
             {
                 scales && scales.length > 0 ? (
                     <div style={{ textAlign: 'center', padding: '20px' }}>
-                        <div style={{ 
+                        <div style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(2, 1fr)', // Two columns
+                            gridTemplateColumns: 'repeat(2, 1fr)',
                             gap: '15px',
-                            maxWidth: '800px',  // Limit maximum width
-                            margin: '0 auto'    // Center the grid
+                            maxWidth: '800px',
+                            margin: '0 auto'
                         }}>
-                            {scales.map((scale, index) => 
-                                <div key={index} style={{
-                                    backgroundColor: '#F69DEE',
-                                    border: '1px solid #ccc',
-                                    borderRadius: '5px',        // Rounded corners
-                                    padding: '10px 15px',      // Add some padding
-                                    fontFamily: 'Geo',
-                                    fontSize: '1.1em',         // Slightly larger text
-                                    color: 'black',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    minHeight: '50px',         // Consistent height
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)' // Subtle shadow
-                                }}>
-                                    {scale}
-                                </div>
-                            )}
+                            {scales.map((scale, index) => {
+                                const { tonic, quality } = parseScaleName(scale);
+                                return (
+                                    <Link
+                                        key={index}
+                                        to={`/scales/${tonicToUrlSlug(tonic)}/${qualityToUrlSlug(quality)}`}
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <div
+                                            style={{
+                                                backgroundColor: SCALE_RESULT_BG,
+                                                border: '1px solid #ccc',
+                                                borderRadius: '5px',
+                                                padding: '10px 15px',
+                                                fontFamily: 'Geo',
+                                                fontSize: '1.1em',
+                                                color: 'black',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                minHeight: '50px',
+                                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                                cursor: 'pointer',
+                                                transition: 'transform 120ms',
+                                            }}
+                                            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                            onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                                        >
+                                            {scale}
+                                        </div>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 ) : (

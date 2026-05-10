@@ -6,6 +6,7 @@ const btnStyle = {
     backgroundColor: 'rgba(221, 192, 152, 0.7)',
     fontFamily: 'Geo',
     color: 'black',
+    width: '160px',
 };
 
 function Navbar() {
@@ -28,7 +29,10 @@ function Navbar() {
             padding: '1rem'
         }}>
             <div className="container">
-                <div className="d-flex justify-content-center w-100">
+                <div className="d-flex flex-column align-items-center gap-2 w-100">
+                    <Link className="btn" style={btnStyle} to="/scales">
+                        View Scales
+                    </Link>
                     <div className="dropdown" ref={containerRef}>
                         <button
                             className="btn dropdown-toggle"

@@ -8,13 +8,22 @@ function Home() {
       <p style={{ fontSize: '1.2rem', marginBottom: '2rem', opacity: 0.85 }}>
         Discover scales from the notes you already have in your head.
       </p>
-      <Link
-        to="/semitones"
-        className="btn btn-light btn-lg"
-        style={{ fontFamily: 'inherit' }}
-      >
-        Find Out Scale
-      </Link>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+        <Link
+          to="/scales"
+          className="btn btn-light btn-lg"
+          style={{ fontFamily: 'inherit' }}
+        >
+          View Scales
+        </Link>
+        <Link
+          to="/semitones"
+          className="btn btn-light btn-lg"
+          style={{ fontFamily: 'inherit' }}
+        >
+          Find Out Scale
+        </Link>
+      </div>
     </div>
   );
 }

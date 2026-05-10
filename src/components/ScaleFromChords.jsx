@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ChordChip from './ChordChip';
 import AddChordPopover from './AddChordPopover';
+import { tonicToUrlSlug, qualityToUrlSlug, parseScaleName } from '../constants/music';
+import { BUTTON_BG, BUTTON_BG_ACTIVE, SCALE_RESULT_BG } from '../constants/theme';
 
 const QUALITY_LABELS = {
     MAJOR: 'Major',
@@ -107,7 +110,7 @@ function ScaleFromChords() {
                         aria-label="Add chord"
                         aria-expanded={isPopoverOpen}
                         style={{
-                            backgroundColor: isPopoverOpen ? '#DDC098' : 'rgba(221, 192, 152, 0.7)',
+                            backgroundColor: isPopoverOpen ? BUTTON_BG_ACTIVE : BUTTON_BG,
                             color: isPopoverOpen ? 'white' : 'black',
                             border: '1px solid #ccc',
                             borderRadius: '20px',
@@ -142,27 +145,39 @@ function ScaleFromChords() {
                             margin: '0 auto'
                         }}
                     >
-                        {scales.map((scale, index) => (
-                            <div
-                                key={index}
-                                style={{
-                                    backgroundColor: '#F69DEE',
-                                    border: '1px solid #ccc',
-                                    borderRadius: '5px',
-                                    padding: '10px 15px',
-                                    fontFamily: 'Geo',
-                                    fontSize: '1.1em',
-                                    color: 'black',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    minHeight: '50px',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}
-                            >
-                                {scale}
-                            </div>
-                        ))}
+                        {scales.map((scale, index) => {
+                            const { tonic, quality } = parseScaleName(scale);
+                            return (
+                                <Link
+                                    key={index}
+                                    to={`/scales/${tonicToUrlSlug(tonic)}/${qualityToUrlSlug(quality)}`}
+                                    style={{ textDecoration: 'none' }}
+                                >
+                                    <div
+                                        style={{
+                                            backgroundColor: SCALE_RESULT_BG,
+                                            border: '1px solid #ccc',
+                                            borderRadius: '5px',
+                                            padding: '10px 15px',
+                                            fontFamily: 'Geo',
+                                            fontSize: '1.1em',
+                                            color: 'black',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            minHeight: '50px',
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                            cursor: 'pointer',
+                                            transition: 'transform 120ms',
+                                        }}
+                                        onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                        onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                                    >
+                                        {scale}
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
             ) : (
