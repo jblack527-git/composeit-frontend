@@ -6,6 +6,7 @@ import ScaleFromSemitone from './components/ScaleFromSemitone';
 import ScaleFromChords from './components/ScaleFromChords';
 import ViewScales from './components/ViewScales';
 import KeyProfile from './components/KeyProfile';
+import { AdvancedModeProvider, useAdvancedMode } from './context/AdvancedModeContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import gumClouds from './assets/gum-clouds.jpg';
@@ -14,7 +15,8 @@ import fujiClouds from './assets/fuji-clouds.jpg';
 // Create a wrapper component to handle the background change
 function AppContent() {
   const location = useLocation();
-  
+  const { advanced, setAdvanced } = useAdvancedMode();
+
   const getBackgroundStyle = () => {
     if (location.pathname === '/semitones' || location.pathname === '/chords') {
       return {
@@ -39,8 +41,35 @@ function AppContent() {
 
   return (
     <div className="App" style={getBackgroundStyle()}>
-      <div style={{ textAlign: "center" }}>
+      <div style={{ position: 'relative', textAlign: "center" }}>
         <img src="nulogo.png" alt="Logo" style={{ maxWidth: "20%", height: "auto", padding: '2%'}} />
+        {/* Advanced mode toggle — vertically centred with logo, right-aligned */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '1.5rem',
+            transform: 'translateY(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontFamily: 'Geo',
+            fontSize: '0.95rem',
+            color: 'black',
+          }}
+          title="WIP"
+        >
+          <input
+            id="advanced-mode-toggle"
+            type="checkbox"
+            checked={advanced}
+            onChange={e => setAdvanced(e.target.checked)}
+            style={{ cursor: 'pointer' }}
+          />
+          <label htmlFor="advanced-mode-toggle" style={{ cursor: 'pointer', userSelect: 'none' }}>
+            Advanced mode
+          </label>
+        </div>
       </div>
       <Navbar />
       <Routes>
@@ -58,7 +87,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AdvancedModeProvider>
+        <AppContent />
+      </AdvancedModeProvider>
     </Router>
   );
 }

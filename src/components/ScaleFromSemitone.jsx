@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { TONICS, tonicToUrlSlug, qualityToUrlSlug, parseScaleName } from '../constants/music';
 import { BUTTON_BG, BUTTON_BG_ACTIVE, SCALE_RESULT_BG } from '../constants/theme';
+import { useAdvancedMode } from '../context/AdvancedModeContext';
 
 function ScaleFromSemitone() {
     const [scales, setScales] = useState([]);
     const [selectedSemitones, setSelectedSemitones] = useState([]);
     const [error, setError] = useState(null);
+    const { advanced } = useAdvancedMode();
 
     useEffect(() => {
         if (selectedSemitones.length === 0) {
@@ -21,7 +23,8 @@ function ScaleFromSemitone() {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                "semitones": selectedSemitones.flatMap(s => s.split('/'))
+                semitones: selectedSemitones.flatMap(s => s.split('/')),
+                advanced,
             })
         })
         .then(response => response.json())
@@ -31,7 +34,7 @@ function ScaleFromSemitone() {
         .catch(error => {
             setError(error.message);
         });
-    }, [selectedSemitones]);
+    }, [selectedSemitones, advanced]);
 
     const handleCheckboxChange = (e) => {
         const value = e.target.value;
