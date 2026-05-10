@@ -9,6 +9,7 @@ import {
   parseScaleName,
 } from '../constants/music';
 import { ACCENT, BUTTON_BG } from '../constants/theme';
+import { useAdvancedMode } from '../context/AdvancedModeContext';
 
 const cardStyle = {
   border: '1px solid rgba(0,0,0,0.15)',
@@ -36,14 +37,17 @@ const cardBodyStyle = {
 function KeyProfile() {
   const { tonic: tonicSlug, quality: qualitySlug } = useParams();
   const navigate = useNavigate();
+  const { advanced } = useAdvancedMode();
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Derive the quality string for the banner check
+  const quality = urlSlugToQuality(qualitySlug);
+
   useEffect(() => {
     const tonic = urlSlugToTonic(tonicSlug);
-    const quality = urlSlugToQuality(qualitySlug);
 
     setLoading(true);
     setProfile(null);
@@ -70,7 +74,7 @@ function KeyProfile() {
         setError(err.message);
         setLoading(false);
       });
-  }, [tonicSlug, qualitySlug]);
+  }, [tonicSlug, qualitySlug, quality]);
 
   const handleBack = () => {
     if (window.history.length <= 1) {
@@ -97,6 +101,8 @@ function KeyProfile() {
     const { tonic, quality } = parseScaleName(scaleStr);
     return `/scales/${tonicToUrlSlug(tonic)}/${qualityToUrlSlug(quality)}`;
   };
+
+  const showAdvancedBanner = !advanced && quality !== 'MAJOR' && quality !== 'MINOR';
 
   return (
     <div style={{ padding: '0 16px 40px' }}>
@@ -132,6 +138,25 @@ function KeyProfile() {
         >
           {title}
         </h2>
+
+        {/* Banner shown on advanced scales when not in advanced mode */}
+        {showAdvancedBanner && (
+          <div
+            style={{
+              backgroundColor: 'rgba(246, 209, 157, 0.6)',
+              border: '1px solid rgba(0,0,0,0.12)',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              marginBottom: '16px',
+              fontFamily: 'Geo',
+              fontSize: '0.9rem',
+              color: '#000',
+              textAlign: 'center',
+            }}
+          >
+            This is an advanced scale. Toggle <strong>Advanced mode</strong> in the top-right to explore more.
+          </div>
+        )}
 
         {loading && (
           <div style={{ ...cardStyle, textAlign: 'center' }}>

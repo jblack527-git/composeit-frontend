@@ -26,7 +26,7 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg" style={{
             backgroundColor: 'rgba(246, 209, 157, 0)',
-            padding: '1rem'
+            padding: '1rem',
         }}>
             <div className="container">
                 <div className="d-flex flex-column align-items-center gap-2 w-100">

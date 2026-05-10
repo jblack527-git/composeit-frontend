@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TONICS, tonicToUrlSlug, qualityToUrlSlug } from '../constants/music';
 import { BUTTON_BG, BUTTON_BG_ACTIVE, BUTTON_BG_SUBTLE, DROPDOWN_BG } from '../constants/theme';
+import { useAdvancedMode } from '../context/AdvancedModeContext';
 
-const FALLBACK_QUALITIES = [
+const FALLBACK_QUALITIES_ALL = [
   { id: 'MAJOR', label: 'Major' },
   { id: 'MINOR', label: 'Minor' },
   { id: 'HARMONIC_MINOR', label: 'Harmonic Minor' },
@@ -17,6 +18,8 @@ const FALLBACK_QUALITIES = [
   { id: 'PENTATONIC_MINOR', label: 'Pentatonic Minor' },
   { id: 'DIMINISHED', label: 'Diminished' },
 ];
+
+const EASY_IDS = new Set(['MAJOR', 'MINOR']);
 
 const qualityBtnStyle = {
   display: 'block',
@@ -110,22 +113,24 @@ function ViewScales() {
   const [openTonic, setOpenTonic] = useState(null);
   const [qualities, setQualities] = useState([]);
   const [loadingQualities, setLoadingQualities] = useState(true);
+  const { advanced } = useAdvancedMode();
 
   useEffect(() => {
-    fetch('/api/qualities')
+    setLoadingQualities(true);
+    fetch(`/api/qualities?advanced=${advanced}`)
       .then(r => {
         if (!r.ok) throw new Error('Failed to load qualities');
         return r.json();
       })
       .then(data => {
-        setQualities(data.qualities ?? FALLBACK_QUALITIES);
+        setQualities(data.qualities ?? FALLBACK_QUALITIES_ALL.filter(q => advanced || EASY_IDS.has(q.id)));
         setLoadingQualities(false);
       })
       .catch(() => {
-        setQualities(FALLBACK_QUALITIES);
+        setQualities(FALLBACK_QUALITIES_ALL.filter(q => advanced || EASY_IDS.has(q.id)));  // fallback mirrors server logic
         setLoadingQualities(false);
       });
-  }, []);
+  }, [advanced]);
 
   useEffect(() => {
     if (!openTonic) return;

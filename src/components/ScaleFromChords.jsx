@@ -5,6 +5,7 @@ import ChordChip from './ChordChip';
 import AddChordPopover from './AddChordPopover';
 import { tonicToUrlSlug, qualityToUrlSlug, parseScaleName } from '../constants/music';
 import { BUTTON_BG, BUTTON_BG_ACTIVE, SCALE_RESULT_BG } from '../constants/theme';
+import { useAdvancedMode } from '../context/AdvancedModeContext';
 
 const QUALITY_LABELS = {
     MAJOR: 'Major',
@@ -36,6 +37,7 @@ function ScaleFromChords() {
     const [error, setError] = useState(null);
     const nextIdRef = useRef(1);
     const addContainerRef = useRef(null);
+    const { advanced } = useAdvancedMode();
 
     useEffect(() => {
         if (chords.length === 0) {
@@ -48,7 +50,7 @@ function ScaleFromChords() {
         fetch('/api/scales-from-chords', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chords: chords.map(toChordString) })
+            body: JSON.stringify({ chords: chords.map(toChordString), advanced })
         })
             .then((response) => {
                 if (!response.ok) throw new Error(`Server error: ${response.status}`);
@@ -60,7 +62,7 @@ function ScaleFromChords() {
             .catch((err) => {
                 setError(err.message);
             });
-    }, [chords]);
+    }, [chords, advanced]);
 
     useEffect(() => {
         if (!isPopoverOpen) return undefined;
